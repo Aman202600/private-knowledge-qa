@@ -1,23 +1,23 @@
 # Private Knowledge Q&A Frontend
 
-Production-ready React frontend for querying your private documents using AI.
+A modern, responsive React frontend for the Private Knowledge Q&A application. Built for visual excellence and premium user experience.
 
 ## Features
 
-- **Document Upload**: Drag and drop interface for .txt files.
-- **Progress Tracking**: Real-time upload progress.
-- **Smart Querying**: Ask questions and get answers based ONLY on your documents.
-- **Source Citations**: See exactly which document and chunk the answer came from.
-- **System Status**: Monitor backend connectivity and health.
+- **Intuitive UI**: Clean, glassmorphic design inspired by modern premium dashboards.
+- **Document Management**: Easy upload and list management for your private knowledge base.
+- **AI Chat Interface**: Interactive querying with real-time feedback and source citations.
+- **System Monitoring**: Dedicated status page to track backend, database, and AI health.
+- **Responsive Design**: Fully optimized for desktop and mobile viewing.
 
 ## Tech Stack
 
-- React 18
-- Vite 5
-- Tailwind CSS
-- Lucide React Icons
-- Axios
-- React Hot Toast
+- **Framework**: React 18
+- **Build Tool**: Vite 5
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Networking**: Axios (with custom interceptors for error handling)
+- **Feedback**: React Hot Toast for micro-animations and notifications
 
 ## Setup
 
@@ -27,12 +27,11 @@ Production-ready React frontend for querying your private documents using AI.
    ```
 
 2. **Environment Variables**
-   Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
+   Create a `.env` file in the root of the frontend folder:
+   ```env
+   VITE_API_URL=http://localhost:8000
    ```
-   
-   Update `VITE_API_URL` if your backend is not running on port 8000.
+   *Note: For production, set this to your deployed backend URL.*
 
 3. **Run Development Server**
    ```bash
@@ -46,9 +45,14 @@ Production-ready React frontend for querying your private documents using AI.
 
 ## Project Structure
 
-- `src/components`: Reusable UI components (Layout, etc.)
-- `src/pages`: Main application pages (Home, Upload, Query, Status)
-- `src/services`: API configuration and centralized requests
-- `src/utils`: Helper functions
+- `src/components`: UI components including a central `Layout` and navigation.
+- `src/pages`: 
+  - `Home`: Overview and landing.
+  - `Upload`: File ingestion and management.
+  - `Query`: The core AI chat experience.
+  - `Status`: Real-time system monitoring.
+- `src/services`: Centralized API service using Axios.
 
+## Production Note
 
+When deploying to Render or similar platforms, ensure `VITE_API_URL` is pointing to your backend endpoint (e.g., `https://your-backend.onrender.com`).
