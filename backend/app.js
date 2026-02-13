@@ -22,6 +22,14 @@ app.use((req, res, next) => {
     next();
 });
 
+// Health Check Route
+app.get('/', (req, res) => {
+    res.status(200).json({
+        status: 'ok',
+        message: 'Server is running'
+    });
+});
+
 // Routes
 app.use('/api/documents', documentRoutes);
 app.use('/api/query', queryRoutes);
