@@ -1,0 +1,251 @@
+You are building the backend for a production-ready Private Knowledge Q&A web application using the MERN stack.
+
+TECH STACK (FIXED – DO NOT CHANGE VERSIONS):
+- Node.js 20 LTS
+- Express 4.x
+- MongoDB 6.x
+- Mongoose 8.x
+- Multer (file upload)
+- OpenAI API (LLM + embeddings)
+- dotenv
+- cors
+- express-validator
+- winston (logging)
+- Docker support
+
+PROJECT GOAL:
+Build a REST API that allows:
+1. Uploading .txt documents
+2. Chunking and embedding them
+3. Asking questions
+4. Returning answers with source citations
+5. Health monitoring endpoint
+
+IMPORTANT:
+- Use OpenAI embeddings (text-embedding-3-small)
+- Store embeddings in MongoDB (no external vector DB to reduce complexity)
+- Use cosine similarity manually
+- Keep system simple but clean
+
+--------------------------------------------------
+
+API ENDPOINTS (MUST MATCH EXACTLY):
+
+1. POST /api/documents/upload
+   - multipart/form-data
+   - field name: file
+   - Accept only .txt
+   - Max size: 5MB
+   - Reject empty files
+
+   Process:
+   - Read file
+   - Chunk into ~500 chars with 50 char overlap
+   - Generate embedding per chunk
+   - Store document in MongoDB
+   - Store chunks with embedding array
+
+   Response:
+   {
+     "document_id": "mongodb_id",
+     "filename": "example.txt",
+     "chunks_created": 10,
+     "status": "success"
+   }
+
+--------------------------------------------------
+
+2. GET /api/documents
+
+Response:
+{
+  "documents": [
+    {
+      "id": "...",
+      "filename": "...",
+      "uploaded_at": "...",
+      "chunk_count": 10
+    }
+  ]
+}
+
+Sorted newest first.
+
+--------------------------------------------------
+
+3. POST /api/query
+
+Body:
+{
+  "question": "What is ...?",
+  "top_k": 3
+}
+
+Process:
+- Validate non-empty question
+- If no documents exist → return error
+- Generate embedding for question
+- Compute cosine similarity vs stored chunk embeddings
+- Select top_k highest
+- Build context
+- Call OpenAI chat completion (gpt-4o-mini or gpt-4.1-mini)
+- Use prompt:
+
+"Based only on the context below, answer the question. 
+If the answer is not in the context, say you do not know.
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:"
+
+Return:
+
+{
+  "answer": "...",
+  "sources": [
+    {
+      "document_id": "...",
+      "filename": "...",
+      "chunk_text": "...",
+      "similarity_score": 0.85
+    }
+  ],
+  "confidence": "high"
+}
+
+--------------------------------------------------
+
+4. DELETE /api/documents/:document_id
+
+- Delete document
+- Delete related chunks
+
+Response:
+{
+  "status": "deleted",
+  "document_id": "..."
+}
+
+--------------------------------------------------
+
+5. GET /api/health
+
+Check:
+- MongoDB connection
+- OpenAI connectivity (simple test call)
+- Server uptime
+
+Return:
+{
+  "status": "healthy",
+  "database": "connected",
+  "llm_connection": "connected",
+  "llm_provider": "openai",
+  "timestamp": "...",
+  "uptime_seconds": 1234
+}
+
+If OpenAI fails but DB works:
+status = "degraded"
+
+--------------------------------------------------
+
+DATABASE SCHEMA
+
+Document:
+{
+  filename: String,
+  uploaded_at: Date,
+  chunk_count: Number
+}
+
+Chunk:
+{
+  document_id: ObjectId,
+  filename: String,
+  chunk_text: String,
+  chunk_index: Number,
+  embedding: [Number],
+  created_at: Date
+}
+
+Index:
+- document_id index
+- created_at index
+
+--------------------------------------------------
+
+ERROR HANDLING REQUIREMENTS:
+
+- Invalid file type
+- File too large
+- Empty file
+- No documents for query
+- OpenAI timeout
+- Missing API key
+- Malformed JSON
+- Mongo connection error
+
+Use centralized error middleware.
+
+--------------------------------------------------
+
+FOLDER STRUCTURE:
+
+backend/
+├── server.js
+├── app.js
+├── config/db.js
+├── models/
+│   ├── Document.js
+│   └── Chunk.js
+├── routes/
+│   ├── documentRoutes.js
+│   ├── queryRoutes.js
+│   └── healthRoutes.js
+├── controllers/
+├── services/
+│   ├── embeddingService.js
+│   ├── llmService.js
+│   ├── similarityService.js
+│   └── chunkingService.js
+├── middleware/
+├── utils/
+├── Dockerfile
+├── docker-compose.yml
+├── .env.example
+└── README.md
+
+--------------------------------------------------
+
+ENV VARIABLES (.env.example):
+
+PORT=8000
+MONGO_URI=mongodb://localhost:27017/knowledgeqa
+OPENAI_API_KEY=your_key_here
+MAX_FILE_SIZE_MB=5
+CHUNK_SIZE=500
+CHUNK_OVERLAP=50
+
+--------------------------------------------------
+
+DOCKER REQUIREMENTS:
+
+- Node 20 base image
+- Mongo service
+- Expose port 8000
+- docker-compose up should run entire backend
+
+--------------------------------------------------
+
+IMPORTANT:
+- Code must be clean
+- Use async/await
+- Use try/catch everywhere
+- Log all requests
+- Do not hardcode API keys
+- Production-ready structure

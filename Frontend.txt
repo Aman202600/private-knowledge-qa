@@ -1,0 +1,153 @@
+You are building a production-ready React frontend for a MERN-based Private Knowledge Q&A application.
+
+TECH STACK (MATCH BACKEND):
+- Node 20
+- React 18
+- Vite 5
+- Tailwind CSS
+- Fetch API
+- react-hot-toast
+- lucide-react icons
+
+API BASE:
+http://localhost:8000
+
+DO NOT CHANGE ENDPOINTS:
+
+- POST /api/documents/upload
+- GET /api/documents
+- POST /api/query
+- DELETE /api/documents/:document_id
+- GET /api/health
+
+--------------------------------------------------
+
+REQUIRED PAGES:
+
+1. HOME (/)
+- App description
+- Clear instructions
+- CTA buttons
+
+--------------------------------------------------
+
+2. UPLOAD (/upload)
+
+Features:
+- Drag and drop
+- .txt only
+- <5MB validation
+- Upload progress
+- Success toast
+- Error handling
+- List of documents
+- Delete button with confirmation modal
+- Show upload time (formatted)
+- Show chunk count
+
+Empty state if none uploaded.
+
+--------------------------------------------------
+
+3. QUERY (/query)
+
+Features:
+- Large textarea
+- Disabled if no documents
+- Ask button
+- Loading spinner
+- After 5s show "Still working..."
+- Show answer
+- Show sources
+- Similarity score progress bars
+- Show chunk text inside card
+- Scroll to answer automatically
+- Handle long answers with "Read more"
+
+--------------------------------------------------
+
+4. STATUS (/status)
+
+Call GET /api/health
+
+Display:
+- Database: green/red
+- LLM connection: green/red
+- Overall system status
+- Uptime seconds
+- Refresh button
+
+--------------------------------------------------
+
+UI DESIGN:
+
+- Tailwind
+- Blue primary: #3B82F6
+- Gray text
+- Rounded-lg
+- shadow-md
+- Mobile responsive
+- Clean SaaS look
+
+--------------------------------------------------
+
+ERROR HANDLING:
+
+Upload:
+- Wrong type
+- Too large
+- Backend down
+- Network error
+
+Query:
+- Empty question
+- No documents
+- LLM timeout
+
+Status:
+- Backend offline detection
+
+--------------------------------------------------
+
+PROJECT STRUCTURE:
+
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/api.js
+│   ├── utils/
+│   ├── App.jsx
+│   └── main.jsx
+├── Dockerfile
+├── .env.example
+└── README.md
+
+--------------------------------------------------
+
+ENV FILE:
+
+VITE_API_URL=http://localhost:8000
+
+--------------------------------------------------
+
+PERFORMANCE:
+
+- React.lazy for pages
+- Loading states everywhere
+- Disable buttons during requests
+- Clean UX
+- Accessible
+- Professional look
+
+--------------------------------------------------
+
+HOSTING:
+
+Frontend:
+- Vercel
+
+Backend:
+- Render / Railway
+
+Must work with deployed backend URL.
