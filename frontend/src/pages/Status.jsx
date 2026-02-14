@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../services/api';
-const API = import.meta.env.VITE_API_URL || "";
+const API = import.meta.env.VITE_API_URL;
 import { RefreshCw, CheckCircle, XCircle, Clock, Database, Radio } from 'lucide-react';
 import { clsx } from 'clsx';
 import { toast } from 'react-hot-toast';

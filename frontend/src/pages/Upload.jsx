@@ -4,7 +4,7 @@ import { Upload as UploadIcon, FileText, Trash2, CheckCircle, AlertCircle, Loade
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
 
-const API = import.meta.env.VITE_API_URL || "";
+const API = import.meta.env.VITE_API_URL;
 
 const Upload = () => {
     const [documents, setDocuments] = useState([]);

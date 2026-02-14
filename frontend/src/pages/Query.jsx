@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from '../services/api';
-const API = import.meta.env.VITE_API_URL || "";
+const API = import.meta.env.VITE_API_URL;
 import { Send, Loader2, BookOpen, Type, ExternalLink } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
