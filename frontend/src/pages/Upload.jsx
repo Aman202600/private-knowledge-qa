@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import api from '../services/api';
+import axios from '../services/api';
 import { Upload as UploadIcon, FileText, Trash2, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
+
+const API = import.meta.env.VITE_API_URL || "";
 
 const Upload = () => {
     const [documents, setDocuments] = useState([]);
@@ -18,7 +20,7 @@ const Upload = () => {
 
     const fetchDocuments = async () => {
         try {
-            const res = await api.get('/api/documents');
+            const res = await axios.get(`${API}/api/documents`);
             setDocuments(res.documents || []);
         } catch (err) {
             console.error(err);
@@ -82,7 +84,7 @@ const Upload = () => {
         setProgress(0);
 
         try {
-            const res = await api.post('/api/documents/upload', formData, {
+            const res = await axios.post(`${API}/api/documents/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -109,7 +111,7 @@ const Upload = () => {
         if (!window.confirm('Are you sure you want to delete this document?')) return;
 
         try {
-            await api.delete(`/api/documents/${id}`);
+            await axios.delete(`${API}/api/documents/${id}`);
             toast.success('Document deleted');
             setDocuments(documents.filter((doc) => doc.id !== id));
         } catch (err) {

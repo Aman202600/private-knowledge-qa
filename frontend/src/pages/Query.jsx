@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import api from '../services/api';
+import axios from '../services/api';
+const API = import.meta.env.VITE_API_URL || "";
 import { Send, Loader2, BookOpen, Type, ExternalLink } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
@@ -15,7 +16,7 @@ const Query = () => {
 
     useEffect(() => {
         // Check if we have docs, otherwise disable input
-        api.get('/api/documents').then((res) => {
+        axios.get(`${API}/api/documents`).then((res) => {
             if (!res.documents || res.documents.length === 0) {
                 setHasDocs(false);
                 toast('Upload some documents first!', { icon: '📂' });
@@ -44,7 +45,7 @@ const Query = () => {
         setActiveQuery(true);
 
         try {
-            const res = await api.post('/api/query', {
+            const res = await axios.post(`${API}/api/query`, {
                 question,
                 top_k: 3 // As requested
             });

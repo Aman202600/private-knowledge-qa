@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/api';
+import axios from '../services/api';
+const API = import.meta.env.VITE_API_URL || "";
 import { RefreshCw, CheckCircle, XCircle, Clock, Database, Radio } from 'lucide-react';
 import { clsx } from 'clsx';
 import { toast } from 'react-hot-toast';
@@ -31,7 +32,7 @@ const Status = () => {
         setLoading(true);
         setError(null);
         try {
-            const data = await api.get('/api/health'); // Using axios interceptor handled in api.js
+            const data = await axios.get(`${API}/api/health`); // Using axios interceptor handled in api.js
             setHealth(data);
             toast.success('System status updated');
         } catch (err) {
@@ -78,7 +79,7 @@ const Status = () => {
                 {error ? (
                     <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 flex items-center gap-3">
                         <XCircle className="w-5 h-5 flex-shrink-0" />
-                        <p className="text-sm font-medium">Could not connect to backend server. Ensure it is running at localhost:8000.</p>
+                        <p className="text-sm font-medium">Could not connect to backend server. Ensure it is reachable.</p>
                     </div>
                 ) : !health ? (
                     <div className="text-center py-12 text-gray-400">Loading status...</div>

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API = import.meta.env.VITE_API_URL || '';
 
 const api = axios.create({
-    baseURL: API_BASE,
+    baseURL: API,
 });
 
 api.interceptors.response.use(
